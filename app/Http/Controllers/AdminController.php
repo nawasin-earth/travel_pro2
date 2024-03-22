@@ -143,7 +143,7 @@ public function storeTravel(Request $request)
 
     return back()->with('success', 'Travel spot added successfully!');
 }
-
+    
     
     private function generateUniqueFileName($file)
     {
