@@ -886,6 +886,37 @@ footer {
   width: 100%;
   height: 480px; /* ลดความสูงเป็น 480px */
 }
+.btn {
+        color: #000; /* กำหนดสีของตัวอักษรเป็นสีดำ */
+        text-decoration: none; /* ลบขีดเส้นใต้ข้อความ */
+        transition: color 0.3s; /* ทำให้การเปลี่ยนสีมีอาการเปลี่ยนแปลงอย่างนุ่มนวล */
+    }
+
+    .btn:hover {
+        color: #333; /* กำหนดสีของตัวอักษรเป็นสีเทาเข้มเมื่อโฮเวอร์ */
+    }
+
+    .price a {
+        color: #0200FF; /* ตั้งสีข้อความเป็นสีฟ้า */
+        text-decoration: none; /* ไม่มีเส้นใต้ */
+    }
+    .price a:hover {
+        text-decoration: underline; /* เมื่อชี้ hover ให้มีเส้นใต้ */
+        color: darkblue;
+    }
+    
+    .website {
+    color: blue; /* ตั้งสีข้อความเป็นสีฟ้า */
+}
+
+.website:hover {
+    text-decoration: underline; /* เมื่อชี้ hover ให้มีเส้นใต้ */
+}
+#panoramaLink {
+    color: white; /* ตั้งสีข้อความเป็นสีขาว */
+}
+
+
 
 
     </style>
@@ -943,7 +974,7 @@ footer {
   <p>&nbsp; ค่าเข้าชม : {{ $item->admission }}</p>
   <p>&nbsp; โทร : {{ $item->contact }}</p>
   <p>&nbsp; ที่อยู่ : {{ $item->address }}</p>
-  <p>&nbsp; เว็บไซต์ : {{ $item->website }}</p><br><br>
+  <p>&nbsp; เว็บไซต์ : <a class="website" href="{{ $item->website }}">{{ $item->website }}</a></p><br><br>
   <div class="map">
   <iframe src="{{ $item->coordinates }}" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
@@ -957,25 +988,25 @@ footer {
     @if ($Recommend)
         @if ($Recommend->restaurant_name && $Recommend->restaurant_link)
         <div class="column-xs-12 column-md-4">
-            <img src="{{ Storage::url($Recommend['restaurant_image']) }}"> <!-- เรียกใช้ URL ของรูปภาพ -->
+            <img src="{{ Storage::url($Recommend['restaurant_image']) }}" style="width: 300px; height: 300px;"> <!-- เรียกใช้ URL ของรูปภาพ -->
             <h4>{{ $Recommend->restaurant_name }}</h4>
-            <p class="price"><a href="{{ $Recommend->restaurant_link }}">พิกัด</a></p>
+            <p class="price"><a href="{{ $Recommend->restaurant_link }}"><i class="fas fa-map-marker-alt"></i> ดูแผนที่</a></p>
         </div>
         @endif
 
         @if ($Recommend->cafe_name && $Recommend->cafe_link)
         <div class="column-xs-12 column-md-4">
-            <img src="{{ Storage::url($Recommend['cafe_image']) }}"> <!-- เรียกใช้ URL ของรูปภาพ -->
+            <img src="{{ Storage::url($Recommend['cafe_image']) }}" style="width: 300px; height: 300px;"> <!-- เรียกใช้ URL ของรูปภาพ -->
             <h4>{{ $Recommend->cafe_name }}</h4>
-            <p class="price"><a href="{{ $Recommend->cafe_link }}">พิกัด</a></p>
+            <p class="price"><a href="{{ $Recommend->cafe_link }}"><i class="fas fa-map-marker-alt"></i> ดูแผนที่</a></p>
         </div>
         @endif
 
         @if ($Recommend->hotel_name && $Recommend->hotel_link)
         <div class="column-xs-12 column-md-4">
-            <img src="{{ Storage::url($Recommend['hotel_image']) }}"> <!-- เรียกใช้ URL ของรูปภาพ -->
+            <img src="{{ Storage::url($Recommend['hotel_image']) }}" style="width: 300px; height: 300px;"> <!-- เรียกใช้ URL ของรูปภาพ -->
             <h4>{{ $Recommend->hotel_name }}</h4>
-            <p class="price"><a href="{{ $Recommend->hotel_link }}">พิกัด</a></p>
+            <p class="price"><a href="{{ $Recommend->hotel_link }}"><i class="fas fa-map-marker-alt"></i> ดูแผนที่</a></p>
         </div>
         @endif
     @endif

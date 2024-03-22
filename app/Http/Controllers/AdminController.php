@@ -53,27 +53,21 @@ public function addDetail($id)
 
 
     
-
-    
 public function storeTravel(Request $request)
 {
     $data = $request->validate([
         'name_t' => 'required|string',
         'province_t' => 'required|string',
-        'description_t' => 'required',
-        'detail' => 'required',
-        'address' => 'required',
-        'time' => 'required',
+        'description_t' => 'required|string',
+        'address' => 'required|string',
+        'time' => 'required|string',
         'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
-        'image_360_link.*' => 'url',
         'season' => 'required|string',
         'coordinates' => 'required|string',
         'contact' => 'nullable|string',
         'website' => 'nullable|string',
+        'detail' => 'required|string',
         'admission' => 'nullable|string',
-        'restaurant_image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-        'cafe_image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-        'hotel_image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         'restaurant_name' => 'nullable|string',
         'restaurant_link' => 'nullable|string',
         'cafe_name' => 'nullable|string',
@@ -92,7 +86,6 @@ public function storeTravel(Request $request)
         }
     }
 
-    
     // Create Travel record
     $travel = Travel::create([
         'name_t' => $data['name_t'],
@@ -101,15 +94,52 @@ public function storeTravel(Request $request)
         'address' => $data['address'],
         'time' => $data['time'],
         'image' => implode(',', $imagePaths), // Store multiple regular images
-        'season' => $request->input('season'),
-        'coordinates' => $request->input('coordinates'),
-        'contact' => $request->input('contact'),
-        'website' => $request->input('website'),
-        'admission' => $request->input('admission'),
-        'detail' => $request->input('detail'),
+        'season' => $data['season'],
+        'coordinates' => $data['coordinates'],
+        'contact' => $data['contact'],
+        'website' => $data['website'],
+        'detail' => $data['detail'],
+        'admission' => $data['admission'],
         'updated_by' => auth()->id(),
     ]);
 
+    // Upload 360 images
+    if ($request->has('image_360_link')) {
+        $image360Links = $request->input('image_360_link');
+        foreach ($image360Links as $link) {
+            // Remove square brackets and escape characters from the URL
+            $link = trim($link, '[]"');
+            $travel->travel360()->create([
+                'image_360_link' => $link
+            ]);
+        }
+    }
+
+    // Save recommendation data with file URLs
+    $recommendData = [
+        'travel_id' => $travel->id,
+        'restaurant_name' => $data['restaurant_name'],
+        'restaurant_link' => $data['restaurant_link'],
+        'cafe_name' => $data['cafe_name'],
+        'cafe_link' => $data['cafe_link'],
+        'hotel_name' => $data['hotel_name'],
+        'hotel_link' => $data['hotel_link'],
+    ];
+
+    // Upload recommend images
+    if ($request->hasFile('restaurant_image')) {
+        $recommendData['restaurant_image'] = $request->file('restaurant_image')->store('public/images');
+    }
+
+    if ($request->hasFile('cafe_image')) {
+        $recommendData['cafe_image'] = $request->file('cafe_image')->store('public/images');
+    }
+
+    if ($request->hasFile('hotel_image')) {
+        $recommendData['hotel_image'] = $request->file('hotel_image')->store('public/images');
+    }
+
+    Recommend::create($recommendData);
 
     return back()->with('success', 'Travel spot added successfully!');
 }
@@ -343,14 +373,28 @@ public function updateTravel(Request $request, $id)
     ]);
 
 // Upload regular images
-$imagePaths = $item->image ? explode(',', $item->image) : [];
+$imagePaths = [];
 if ($request->hasFile('images')) {
+    // Delete old images
+    foreach (explode(',', $item->image) as $oldImage) {
+        $oldImagePath = public_path('images/' . $oldImage);
+        if (file_exists($oldImagePath) && is_file($oldImagePath)) {
+            unlink($oldImagePath);
+        }
+    }
+
+    // Upload new images
     foreach ($request->file('images') as $image) {
         $imageName = $this->generateUniqueFileName($image);
         $image->move(public_path('images'), $imageName);
         $imagePaths[] = $imageName;
     }
+} else {
+    // Keep the old images if no new images are uploaded
+    $imagePaths = explode(',', $item->image);
 }
+
+
 
     // Update Travel record
     $item->update([

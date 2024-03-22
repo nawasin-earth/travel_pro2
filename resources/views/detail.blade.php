@@ -990,7 +990,7 @@ footer {
     @if ($Recommend)
         @if ($Recommend->restaurant_name && $Recommend->restaurant_link)
         <div class="column-xs-12 column-md-4">
-            <img src="{{ Storage::url($Recommend['restaurant_image']) }}"> <!-- เรียกใช้ URL ของรูปภาพ -->
+            <img src="{{ Storage::url($Recommend['restaurant_image']) }}" style="width: 300px; height: 300px;"> <!-- เรียกใช้ URL ของรูปภาพ -->
             <h4>{{ $Recommend->restaurant_name }}</h4>
             <p class="price"><a href="{{ $Recommend->restaurant_link }}"><i class="fas fa-map-marker-alt"></i> ดูแผนที่</a></p>
         </div>
@@ -998,7 +998,7 @@ footer {
 
         @if ($Recommend->cafe_name && $Recommend->cafe_link)
         <div class="column-xs-12 column-md-4">
-            <img src="{{ Storage::url($Recommend['cafe_image']) }}"> <!-- เรียกใช้ URL ของรูปภาพ -->
+            <img src="{{ Storage::url($Recommend['cafe_image']) }}" style="width: 300px; height: 300px;"> <!-- เรียกใช้ URL ของรูปภาพ -->
             <h4>{{ $Recommend->cafe_name }}</h4>
             <p class="price"><a href="{{ $Recommend->cafe_link }}"><i class="fas fa-map-marker-alt"></i> ดูแผนที่</a></p>
         </div>
@@ -1006,7 +1006,7 @@ footer {
 
         @if ($Recommend->hotel_name && $Recommend->hotel_link)
         <div class="column-xs-12 column-md-4">
-            <img src="{{ Storage::url($Recommend['hotel_image']) }}"> <!-- เรียกใช้ URL ของรูปภาพ -->
+            <img src="{{ Storage::url($Recommend['hotel_image']) }}" style="width: 300px; height: 300px;"> <!-- เรียกใช้ URL ของรูปภาพ -->
             <h4>{{ $Recommend->hotel_name }}</h4>
             <p class="price"><a href="{{ $Recommend->hotel_link }}"><i class="fas fa-map-marker-alt"></i> ดูแผนที่</a></p>
         </div>

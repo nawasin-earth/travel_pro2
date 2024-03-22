@@ -196,9 +196,8 @@ body {
 
 #content main .table-data .todo .todo-list li {
 	width: 100%;
-	margin-bottom: 16px;
+	margin-bottom: 6px;
 	background: var(--grey);
-	border-radius: 10px;
 	padding: 14px 20px;
 	display: flex;
 	justify-content: space-between;
@@ -218,7 +217,42 @@ body {
     word-break: break-all;
 }
 
+    .order table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
+    .order table th,
+    .order table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .order table th {
+        background-color: #f2f2f2;
+    }
+
+    .order table tbody {
+        height: 250px; /* กำหนดความสูงของ tbody */
+        overflow-y: auto; /* เปิดการเลื่อนแนวตั้ง */
+        display: block;
+    }
+
+    .order table thead,
+    .order table tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed; /* ปรับขนาดความกว้างของคอลัมน์ */
+    }
+
+    .order table tbody::-webkit-scrollbar {
+        width: 5px; /* กำหนดความกว้างของ scroll bar */
+    }
+
+    .order table tbody::-webkit-scrollbar-thumb {
+        background-color: #888; /* สีของ scroll bar */
+    }
 
   </style>
 </head>
